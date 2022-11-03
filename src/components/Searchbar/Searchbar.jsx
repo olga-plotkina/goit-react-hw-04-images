@@ -8,7 +8,7 @@ import {
   SearchInput,
 } from './Searchbar.styled';
 
-const schema = Yup.string().required;
+const schema = Yup.object().shape({ search: Yup.string().required() });
 
 const initialValues = {
   search: '',
