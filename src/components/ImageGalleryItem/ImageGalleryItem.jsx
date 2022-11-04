@@ -1,9 +1,9 @@
 import { GalleryItem, ItemImage } from './ImageGalleryItem.styled';
 
-export const ImageGalleryItem = () => {
+export const ImageGalleryItem = ({ preview, bigImage }) => {
   return (
     <GalleryItem>
-      <ItemImage src="" alt="" />
+      <ItemImage src={preview} alt="" />
     </GalleryItem>
   );
 };
