@@ -1,5 +1,4 @@
 import { Searchbar } from './Searchbar/Searchbar';
-// import { Notiflix } from 'notiflix';
 import React from 'react';
 import { Modal } from './Modal';
 import { getCurrentPicture } from '../api/getCurrentPicture';
@@ -13,14 +12,17 @@ export class App extends React.Component {
     isGalleryLoaded: false,
   };
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.searchResultArray !== this.state.searchResultArray) {
-      this.setState({ isGalleryLoaded: false });
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.searchResultArray !== this.state.searchResultArray) {
+  //     this.setState({ isGalleryLoaded: false });
+  //   }
+  // }
 
+  componentDidMount() {
+    this.setState({ isGalleryLoaded: true });
+  }
   handleSubmit = info => {
-    getCurrentPicture(info.search).then(dataPictures => {
+    getCurrentPicture(info.search.toLowerCase()).then(dataPictures => {
       // if (dataPictures.data.hits.length === 0) {
       //   Notiflix.Notify.failure(
       //     'Sorry, there are no images matching your search query. Please try again.'

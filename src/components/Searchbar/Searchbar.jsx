@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import Notiflix from 'notiflix';
 import { Formik, ErrorMessage } from 'formik';
 import { StyledSubmitButton } from './Searchbar.styled';
 import { ReactComponent as SearchIcon } from '../../icons/search.svg';
@@ -12,6 +13,9 @@ const initialValues = {
 
 export const Searchbar = ({ submitProp }) => {
   const handleSubmit = (values, { resetForm }) => {
+    if (values.search.trim() === '') {
+      return Notiflix.Notify.failure('Tape your search query plese');
+    }
     submitProp(values);
     resetForm();
   };
