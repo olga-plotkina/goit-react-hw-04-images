@@ -9,9 +9,15 @@ export class App extends React.Component {
   state = {
     searchResultArray: [],
     page: 1,
-    showModal: false,
     bigImageLink: '',
+    isGalleryLoaded: false,
   };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.searchResultArray !== this.state.searchResultArray) {
+      this.setState({ isGalleryLoaded: false });
+    }
+  }
 
   handleSubmit = info => {
     getCurrentPicture(info.search).then(dataPictures => {
@@ -41,18 +47,20 @@ export class App extends React.Component {
     this.setState({ bigImageLink: link });
   };
   render() {
-    const { searchResultArray, bigImageLink } = this.state;
-
+    const { searchResultArray, bigImageLink, isGalleryLoaded } = this.state;
+    const showloader = searchResultArray.length > 0 && !isGalleryLoaded;
+    const gallerySize = isGalleryLoaded ? '100%' : 0;
     return (
       <>
         <Searchbar submitProp={this.handleSubmit} />
         {searchResultArray.length > 0 && (
           <ImageGallery
+            width={gallerySize}
+            height={gallerySize}
             galleryArray={searchResultArray}
             clickProp={this.setBigImageLink}
           />
         )}
-        ;
         {bigImageLink.length > 0 && (
           <Modal onClose={this.resetBigImageLink}>
             <img src={bigImageLink} alt="" />
@@ -61,6 +69,7 @@ export class App extends React.Component {
             </button>
           </Modal>
         )}
+        {showloader && <h2> Загружаем галерею</h2>}
       </>
     );
   }
