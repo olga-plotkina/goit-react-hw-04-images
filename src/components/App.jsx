@@ -7,9 +7,10 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 
 export class App extends React.Component {
   state = {
-    array: [],
+    searchResultArray: [],
     page: 1,
     showModal: false,
+    activePictureIndex: null,
   };
 
   handleSubmit = info => {
@@ -23,29 +24,40 @@ export class App extends React.Component {
       // Notiflix.Notify.success(
       //   `Hooray! We found ${dataPictures.data.totalHits} images.`
       // );
-      this.setState({ array: dataPictures.data.hits });
+      this.setState({ searchResultArray: dataPictures.data.hits });
     });
-
-    // return dataPictures.data.hits;
   };
 
   toggleModal = () => {
-    this.setState(({ showModal }) => ({ showModal: !showModal }));
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
+  activeIndexHandler = index => {
+    this.setState({ activePictureIndex: index });
   };
   render() {
-    const { showModal } = this.state;
+    const { showModal, searchResultArray, activePictureIndex } = this.state;
 
     return (
       <>
         <Searchbar submitProp={this.handleSubmit} />
-        <button type="button" onClick={this.toggleModal}>
-          Открыть модалку
-        </button>
-        <ImageGallery galleryProp={this.state.array} />
+        {searchResultArray.length > 0 && (
+          <ImageGallery
+            galleryProp={searchResultArray}
+            clickProp={this.activeIndexHandler}
+            toggleProp={this.toggleModal}
+          />
+        )}
+        ;
         {showModal && (
           <Modal onClose={this.toggleModal}>
             jhbjbjh
-            <img src="" alt="" />
+            <img
+              src={searchResultArray[activePictureIndex].largeImageURL}
+              alt=""
+            />
             <button type="button" onClick={this.toggleModal}>
               Закрити
             </button>
