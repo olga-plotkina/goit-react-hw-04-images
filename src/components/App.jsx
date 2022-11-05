@@ -53,7 +53,7 @@ export class App extends React.Component {
           />
         )}
         ;
-        {activePictureIndex > 0 && (
+        {activePictureIndex >= 0 && (
           <Modal onClose={this.resetActiveIndex}>
             <img
               src={searchResultArray[activePictureIndex].largeImageURL}
