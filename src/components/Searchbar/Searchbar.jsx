@@ -1,12 +1,8 @@
 import * as Yup from 'yup';
 import { Formik, ErrorMessage } from 'formik';
-import {
-  SearchForm,
-  StyledSearchbar,
-  SearchFormButton,
-  SearchLabel,
-  SearchInput,
-} from './Searchbar.styled';
+import { StyledSubmitButton } from './Searchbar.styled';
+import { ReactComponent as SearchIcon } from '../../icons/search.svg';
+import { SearchForm, StyledSearchbar, SearchInput } from './Searchbar.styled';
 
 const schema = Yup.object().shape({ search: Yup.string().required() });
 
@@ -27,9 +23,9 @@ export const Searchbar = ({ submitProp }) => {
         validationSchema={schema}
       >
         <SearchForm>
-          <SearchFormButton type="submit">
-            <SearchLabel>Search</SearchLabel>
-          </SearchFormButton>
+          <StyledSubmitButton type="submit" aria-label="Search">
+            <SearchIcon width="20" />
+          </StyledSubmitButton>
 
           <SearchInput
             name="search"

@@ -28,17 +28,20 @@ export class App extends React.Component {
     });
   };
 
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
+  // toggleModal = () => {
+  //   this.setState(({ showModal }) => ({
+  //     showModal: !showModal,
+  //   }));
+  // };
+  resetActiveIndex = () => {
+    this.setState({ activePictureIndex: null });
   };
 
   activeIndexHandler = index => {
     this.setState({ activePictureIndex: index });
   };
   render() {
-    const { showModal, searchResultArray, activePictureIndex } = this.state;
+    const { searchResultArray, activePictureIndex } = this.state;
 
     return (
       <>
@@ -47,18 +50,16 @@ export class App extends React.Component {
           <ImageGallery
             galleryProp={searchResultArray}
             clickProp={this.activeIndexHandler}
-            toggleProp={this.toggleModal}
           />
         )}
         ;
-        {showModal && (
-          <Modal onClose={this.toggleModal}>
-            jhbjbjh
+        {activePictureIndex > 0 && (
+          <Modal onClose={this.resetActiveIndex}>
             <img
               src={searchResultArray[activePictureIndex].largeImageURL}
               alt=""
             />
-            <button type="button" onClick={this.toggleModal}>
+            <button type="button" onClick={this.resetActiveIndex}>
               Закрити
             </button>
           </Modal>

@@ -6,7 +6,6 @@ export class ImageGallery extends React.Component {
   state = { activePictureId: null };
   clickHandlerFunction = index => {
     this.props.clickProp(index);
-    this.props.toggleProp();
   };
   render() {
     return (
