@@ -10,7 +10,7 @@ export class App extends React.Component {
     searchResultArray: [],
     page: 1,
     showModal: false,
-    activePictureIndex: null,
+    bigImageLink: '',
   };
 
   handleSubmit = info => {
@@ -33,33 +33,30 @@ export class App extends React.Component {
   //     showModal: !showModal,
   //   }));
   // };
-  resetActiveIndex = () => {
-    this.setState({ activePictureIndex: null });
+  resetBigImageLink = () => {
+    this.setState({ bigImageLink: '' });
   };
 
-  activeIndexHandler = index => {
-    this.setState({ activePictureIndex: index });
+  setBigImageLink = link => {
+    this.setState({ bigImageLink: link });
   };
   render() {
-    const { searchResultArray, activePictureIndex } = this.state;
+    const { searchResultArray, bigImageLink } = this.state;
 
     return (
       <>
         <Searchbar submitProp={this.handleSubmit} />
         {searchResultArray.length > 0 && (
           <ImageGallery
-            galleryProp={searchResultArray}
-            clickProp={this.activeIndexHandler}
+            galleryArray={searchResultArray}
+            clickProp={this.setBigImageLink}
           />
         )}
         ;
-        {activePictureIndex >= 0 && (
-          <Modal onClose={this.resetActiveIndex}>
-            <img
-              src={searchResultArray[activePictureIndex].largeImageURL}
-              alt=""
-            />
-            <button type="button" onClick={this.resetActiveIndex}>
+        {bigImageLink.length > 0 && (
+          <Modal onClose={this.resetBigImageLink}>
+            <img src={bigImageLink} alt="" />
+            <button type="button" onClick={this.resetBigImageLink}>
               Закрити
             </button>
           </Modal>

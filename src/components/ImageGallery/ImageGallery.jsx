@@ -2,23 +2,21 @@ import React from 'react';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { GalleryList } from './ImageGallery.styled';
 
-export class ImageGallery extends React.Component {
-  state = { activePictureId: null };
-  clickHandlerFunction = index => {
-    this.props.clickProp(index);
+export const ImageGallery = ({ galleryArray, clickProp }) => {
+  const clickHandlerFunction = link => {
+    clickProp(link);
   };
-  render() {
-    return (
-      <GalleryList>
-        {this.props.galleryProp.map((item, index) => (
-          <ImageGalleryItem
-            key={item.id}
-            preview={item.webformatURL}
-            bigImage={item.largeImageURL}
-            clickHandler={() => this.clickHandlerFunction(index)}
-          ></ImageGalleryItem>
-        ))}
-      </GalleryList>
-    );
-  }
-}
+  console.log(galleryArray);
+
+  return (
+    <GalleryList>
+      {galleryArray.map(item => (
+        <ImageGalleryItem
+          key={item.id}
+          preview={item.webformatURL}
+          clickHandler={() => clickHandlerFunction(item.largeImageURL)}
+        ></ImageGalleryItem>
+      ))}
+    </GalleryList>
+  );
+};
