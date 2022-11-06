@@ -1,4 +1,5 @@
 import React from 'react';
+import { Loader } from 'components/Loader/Loader';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { GalleryList } from './ImageGallery.styled';
 import { getCurrentPicture } from '../../api/getCurrentPicture';
@@ -42,7 +43,7 @@ export class ImageGallery extends React.Component {
     }
 
     if (status === 'pending') {
-      return <div>Загружаем</div>;
+      return <Loader />;
     }
 
     if (status === 'resolved') {
