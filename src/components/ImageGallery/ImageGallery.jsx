@@ -5,11 +5,11 @@ import { getCurrentPicture } from '../../api/getCurrentPicture';
 import Notiflix from 'notiflix';
 
 export class ImageGallery extends React.Component {
-  state = { arrayOfPictures: [], loading: false };
+  state = { arrayOfPictures: [], status: 'idle' };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.stringOfQuery !== this.props.stringOfQuery) {
-      this.setState({ loading: true, arrayOfPictures: [] });
+      this.setState({ status: 'pending' });
       getCurrentPicture(this.props.stringOfQuery)
         .then(picturesInfo => {
           if (picturesInfo.data.hits.length === 0) {
@@ -18,7 +18,10 @@ export class ImageGallery extends React.Component {
             );
             return;
           }
-          this.setState({ arrayOfPictures: picturesInfo.data.hits });
+          this.setState({
+            status: 'resolved',
+            arrayOfPictures: picturesInfo.data.hits,
+          });
         })
         .finally(() => {
           this.setState({ loading: false });
@@ -32,19 +35,28 @@ export class ImageGallery extends React.Component {
   //   this.setState({arrayOfPictures: pictureInfo.data.hits})});
 
   render() {
-    const { loading, arrayOfPictures } = this.state;
-    return (
-      <GalleryList>
-        {loading && <div>загружаем</div>}
-        {!arrayOfPictures.length && !loading && <li>Здесь ничего нет</li>}
-        {arrayOfPictures.map(item => (
-          <ImageGalleryItem
-            key={item.id}
-            preview={item.webformatURL}
-            clickHandler={() => this.clickHandlerFunction(item.largeImageURL)}
-          ></ImageGalleryItem>
-        ))}
-      </GalleryList>
-    );
+    const { arrayOfPictures, status } = this.state;
+
+    if (status === 'idle') {
+      return <div>Здесь ничего нет</div>;
+    }
+
+    if (status === 'pending') {
+      return <div>Загружаем</div>;
+    }
+
+    if (status === 'resolved') {
+      return (
+        <GalleryList>
+          {arrayOfPictures.map(item => (
+            <ImageGalleryItem
+              key={item.id}
+              preview={item.webformatURL}
+              clickHandler={() => this.clickHandlerFunction(item.largeImageURL)}
+            ></ImageGalleryItem>
+          ))}
+        </GalleryList>
+      );
+    }
   }
 }
