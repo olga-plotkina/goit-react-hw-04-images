@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Notiflix from 'notiflix';
+import PropTypes from 'prop-types';
 import { Formik, ErrorMessage } from 'formik';
 import { StyledSubmitButton } from './Searchbar.styled';
 import { ReactComponent as SearchIcon } from '../../icons/search.svg';
@@ -12,7 +13,7 @@ const initialValues = {
 };
 
 export const Searchbar = ({ submitProp, isSubmitting }) => {
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = (values, actions) => {
     if (values.search.trim() === '') {
       return Notiflix.Notify.failure('Tape your search query plese');
     }
@@ -46,4 +47,9 @@ export const Searchbar = ({ submitProp, isSubmitting }) => {
       </Formik>
     </StyledSearchbar>
   );
+};
+
+Searchbar.propTypes = {
+  submitProp: PropTypes.func.isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
 };

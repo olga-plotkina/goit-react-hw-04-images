@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { StyledOverlay, StyledModal } from './Modal.styled';
@@ -5,6 +6,11 @@ import { StyledOverlay, StyledModal } from './Modal.styled';
 const modalRoot = document.getElementById('modal-root');
 
 export class Modal extends React.Component {
+  static propTypes = {
+    onClick: PropTypes.func,
+    children: PropTypes.node,
+  };
+
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }

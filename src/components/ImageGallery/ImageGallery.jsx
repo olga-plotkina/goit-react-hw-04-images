@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Loader } from 'components/Loader/Loader';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { GalleryList } from './ImageGallery.styled';
@@ -8,6 +9,14 @@ import { Button } from 'components/Button/Button';
 
 export class ImageGallery extends React.Component {
   state = { arrayOfPictures: [], page: 1, status: 'idle' };
+
+  static propTypes = {
+    id: PropTypes.string,
+    preview: PropTypes.string,
+    description: PropTypes.string,
+    clickHandler: PropTypes.func,
+    loadMore: PropTypes.func,
+  };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.stringOfQuery !== this.props.stringOfQuery) {
@@ -41,8 +50,8 @@ export class ImageGallery extends React.Component {
     this.setState(s => ({ page: s.page + 1 }));
   };
 
-  clickHandlerFunction = link => {
-    this.props.clickProp(link);
+  clickHandlerFunction = (link, desc) => {
+    this.props.clickProp(link, desc);
   };
 
   render() {
@@ -64,8 +73,9 @@ export class ImageGallery extends React.Component {
               <ImageGalleryItem
                 key={item.id}
                 preview={item.webformatURL}
+                description={item.tags}
                 clickHandler={() =>
-                  this.clickHandlerFunction(item.largeImageURL)
+                  this.clickHandlerFunction(item.largeImageURL, item.tags)
                 }
               ></ImageGalleryItem>
             ))}

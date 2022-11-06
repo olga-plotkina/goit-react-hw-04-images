@@ -8,6 +8,7 @@ export class App extends React.Component {
   state = {
     searchString: '',
     bigImageLink: '',
+    bigImageDescription: '',
     isLoading: false,
   };
 
@@ -18,11 +19,11 @@ export class App extends React.Component {
   };
 
   resetBigImageLink = () => {
-    this.setState({ bigImageLink: '' });
+    this.setState({ bigImageLink: '', bigImageDescription: '' });
   };
 
-  setBigImageLink = link => {
-    this.setState({ bigImageLink: link });
+  setBigImageLink = (link, desc) => {
+    this.setState({ bigImageLink: link, bigImageDescription: desc });
   };
 
   changeLoadStatus = () => {
