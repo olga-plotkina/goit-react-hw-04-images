@@ -56,11 +56,6 @@ export class ImageGallery extends React.Component {
 
   render() {
     const { arrayOfPictures, status } = this.state;
-
-    if (status === 'idle') {
-      return <div>Здесь ничего нет</div>;
-    }
-
     if (status === 'pending') {
       return <Loader />;
     }
