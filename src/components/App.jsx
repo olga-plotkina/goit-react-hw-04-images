@@ -1,11 +1,12 @@
 import { Searchbar } from './Searchbar/Searchbar';
 import React from 'react';
 import { Modal } from './Modal';
-import { getCurrentPicture } from '../api/getCurrentPicture';
+
 import { ImageGallery } from './ImageGallery/ImageGallery';
 
 export class App extends React.Component {
   state = {
+    searchString: '',
     searchResultArray: [],
     page: 1,
     bigImageLink: '',
@@ -22,18 +23,16 @@ export class App extends React.Component {
     this.setState({ isGalleryLoaded: true });
   }
   handleSubmit = info => {
-    getCurrentPicture(info.search.toLowerCase()).then(dataPictures => {
-      // if (dataPictures.data.hits.length === 0) {
-      //   Notiflix.Notify.failure(
-      //     'Sorry, there are no images matching your search query. Please try again.'
-      //   );
-      //   return;
-      // }
-      // Notiflix.Notify.success(
-      //   `Hooray! We found ${dataPictures.data.totalHits} images.`
-      // );
-      this.setState({ searchResultArray: dataPictures.data.hits });
-    });
+    // if (dataPictures.data.hits.length === 0) {
+    //   Notiflix.Notify.failure(
+    //     'Sorry, there are no images matching your search query. Please try again.'
+    //   );
+    //   return;
+    // }
+    // Notiflix.Notify.success(
+    //   `Hooray! We found ${dataPictures.data.totalHits} images.`
+    // );
+    this.setState({ searchString: info.search.toLowerCase() });
   };
 
   // toggleModal = () => {
@@ -49,20 +48,19 @@ export class App extends React.Component {
     this.setState({ bigImageLink: link });
   };
   render() {
-    const { searchResultArray, bigImageLink, isGalleryLoaded } = this.state;
-    const showloader = searchResultArray.length > 0 && !isGalleryLoaded;
-    const gallerySize = isGalleryLoaded ? '100%' : 0;
+    const { searchString, bigImageLink } = this.state;
+    // const showloader = searchResultArray.length > 0 && !isGalleryLoaded;
+    // const gallerySize = isGalleryLoaded ? '100%' : 0;
     return (
       <>
         <Searchbar submitProp={this.handleSubmit} />
-        {searchResultArray.length > 0 && (
-          <ImageGallery
-            width={gallerySize}
-            height={gallerySize}
-            galleryArray={searchResultArray}
-            clickProp={this.setBigImageLink}
-          />
-        )}
+        <ImageGallery
+          // width={gallerySize}
+          // height={gallerySize}
+          stringOfQuery={searchString}
+          // galleryArray={searchResultArray}
+          clickProp={this.setBigImageLink}
+        />
         {bigImageLink.length > 0 && (
           <Modal onClose={this.resetBigImageLink}>
             <img src={bigImageLink} alt="" />
@@ -71,7 +69,7 @@ export class App extends React.Component {
             </button>
           </Modal>
         )}
-        {showloader && <h2> Загружаем галерею</h2>}
+        {/* {showloader && <h2> Загружаем галерею</h2>} */}
       </>
     );
   }
