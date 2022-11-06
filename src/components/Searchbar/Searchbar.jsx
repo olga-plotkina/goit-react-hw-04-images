@@ -11,7 +11,7 @@ const initialValues = {
   search: '',
 };
 
-export const Searchbar = ({ submitProp }) => {
+export const Searchbar = ({ submitProp, isSubmitting }) => {
   const handleSubmit = (values, { resetForm }) => {
     if (values.search.trim() === '') {
       return Notiflix.Notify.failure('Tape your search query plese');
@@ -27,7 +27,11 @@ export const Searchbar = ({ submitProp }) => {
         validationSchema={schema}
       >
         <SearchForm>
-          <StyledSubmitButton type="submit" aria-label="Search">
+          <StyledSubmitButton
+            type="submit"
+            disabled={isSubmitting}
+            aria-label="Search"
+          >
             <SearchIcon width="20" />
           </StyledSubmitButton>
 

@@ -10,30 +10,26 @@ export class ImageGallery extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.stringOfQuery !== this.props.stringOfQuery) {
+      this.props.disableButtonProp();
       this.setState({ status: 'pending' });
-      getCurrentPicture(this.props.stringOfQuery)
-        .then(picturesInfo => {
-          if (picturesInfo.data.hits.length === 0) {
-            Notiflix.Notify.failure(
-              'Sorry, there are no images matching your search query. Please try again.'
-            );
-            return;
-          }
-          this.setState({
-            status: 'resolved',
-            arrayOfPictures: picturesInfo.data.hits,
-          });
-        })
-        .finally(() => {
-          this.setState({ loading: false });
+      getCurrentPicture(this.props.stringOfQuery).then(picturesInfo => {
+        if (picturesInfo.data.hits.length === 0) {
+          Notiflix.Notify.failure(
+            'Sorry, there are no images matching your search query. Please try again.'
+          );
+          return;
+        }
+        this.props.disableButtonProp();
+        this.setState({
+          status: 'resolved',
+          arrayOfPictures: picturesInfo.data.hits,
         });
+      });
     }
   }
   clickHandlerFunction = link => {
     this.props.clickProp(link);
   };
-  // getCurrentPicture(this.props.string).then(pictureInfo => {
-  //   this.setState({arrayOfPictures: pictureInfo.data.hits})});
 
   render() {
     const { arrayOfPictures, status } = this.state;
