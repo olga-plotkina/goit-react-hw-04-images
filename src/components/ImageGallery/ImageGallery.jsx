@@ -5,7 +5,6 @@ import { GalleryList } from './ImageGallery.styled';
 import { getCurrentPicture } from '../../api/getCurrentPicture';
 import Notiflix from 'notiflix';
 import { Button } from 'components/Button/Button';
-import { Link, animateScroll as scroll } from 'react-scroll';
 
 export class ImageGallery extends React.Component {
   state = { arrayOfPictures: [], page: 1, status: 'idle' };
