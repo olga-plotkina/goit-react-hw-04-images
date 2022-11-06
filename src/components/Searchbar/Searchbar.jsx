@@ -17,7 +17,6 @@ export const Searchbar = ({ submitProp, isSubmitting }) => {
       return Notiflix.Notify.failure('Tape your search query plese');
     }
     submitProp(values);
-    resetForm();
   };
   return (
     <StyledSearchbar>

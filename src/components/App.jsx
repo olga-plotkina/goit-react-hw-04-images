@@ -7,13 +7,14 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 export class App extends React.Component {
   state = {
     searchString: '',
-    page: 1,
     bigImageLink: '',
     isLoading: false,
   };
 
   handleSubmit = info => {
-    this.setState({ searchString: info.search.toLowerCase() });
+    this.setState({
+      searchString: info.search.toLowerCase(),
+    });
   };
 
   resetBigImageLink = () => {
@@ -41,9 +42,6 @@ export class App extends React.Component {
         {bigImageLink.length > 0 && (
           <Modal onClose={this.resetBigImageLink}>
             <img src={bigImageLink} alt="" />
-            <button type="button" onClick={this.resetBigImageLink}>
-              Закрити
-            </button>
           </Modal>
         )}
       </>
