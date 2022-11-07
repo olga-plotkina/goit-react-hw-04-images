@@ -10,7 +10,7 @@ export const ImageGalleryItem = ({ preview, clickHandler, description }) => {
 };
 
 ImageGalleryItem.propTypes = {
-  preview: PropTypes.string.isRequired,
-  clickHandler: PropTypes.func.isRequired,
-  description: PropTypes.string.isRequired,
+  preview: PropTypes.string,
+  clickHandler: PropTypes.func,
+  description: PropTypes.string,
 };

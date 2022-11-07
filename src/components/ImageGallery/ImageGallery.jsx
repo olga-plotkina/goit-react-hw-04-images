@@ -37,10 +37,10 @@ export class ImageGallery extends React.Component {
             return;
           }
           this.props.disableButtonProp();
-          this.setState({
+          this.setState(s => ({
+            arrayOfPictures: [...s.arrayOfPictures, ...picturesInfo.data.hits],
             status: 'resolved',
-            arrayOfPictures: picturesInfo.data.hits,
-          });
+          }));
         }
       );
     }
@@ -56,7 +56,7 @@ export class ImageGallery extends React.Component {
 
   render() {
     const { arrayOfPictures, status } = this.state;
-    if (status === 'pending') {
+    if (status === 'pending' && arrayOfPictures.length === 0) {
       return <Loader />;
     }
 
@@ -75,7 +75,10 @@ export class ImageGallery extends React.Component {
               ></ImageGalleryItem>
             ))}
           </GalleryList>
-          <Button loadMore={this.loadMore} />
+          {this.state.arrayOfPictures.length >= 12 &&
+            this.state.status === 'resolved' && (
+              <Button loadMore={this.loadMore} />
+            )}
         </>
       );
     }
