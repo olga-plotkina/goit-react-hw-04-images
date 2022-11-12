@@ -61,12 +61,16 @@ export const StyledSubmitButton = styled.button`
   cursor: pointer;
   outline: none;
 
+  &:disabled {
+    opacity: 0;
+  }
+
   &:hover {
     opacity: 1;
   }
 
   &:disabled:hover {
-    opacity: 0.6;
+    opacity: 0;
     cursor: auto;
   }
 `;
