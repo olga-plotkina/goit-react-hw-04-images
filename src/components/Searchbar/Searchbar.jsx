@@ -56,5 +56,4 @@ export const Searchbar = ({ submitProp }) => {
 
 Searchbar.propTypes = {
   submitProp: PropTypes.func,
-  isSubmitting: PropTypes.bool,
 };

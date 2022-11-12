@@ -1,20 +1,18 @@
-import { Searchbar } from './Searchbar/Searchbar';
 import React from 'react';
-import { Modal } from './Modal';
-import { ImageGallery } from './ImageGallery/ImageGallery';
-import { getCurrentPicture } from 'api/getCurrentPicture';
 import Notiflix from 'notiflix';
-import { Button } from './Button/Button';
-import { Loader } from 'components/Loader/Loader';
+import { Searchbar } from './Searchbar/';
+import { ImageGallery } from './ImageGallery';
+import { getCurrentPicture } from 'api/getCurrentPicture';
+import { Button } from './Button/';
+import { Loader } from 'components/Loader';
 
 export class App extends React.Component {
   state = {
     searchString: '',
-    bigImageLink: '',
-    bigImageDescription: '',
     status: 'idle',
     page: 1,
     arrayOfPictures: [],
+    error: false,
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -34,6 +32,7 @@ export class App extends React.Component {
           status: 'resolved',
         });
       } catch (error) {
+        this.setState({ error: true, status: 'fail' });
         Notiflix.Notify.failure(error);
       }
     }
@@ -53,6 +52,7 @@ export class App extends React.Component {
           status: 'resolved',
         }));
       } catch (error) {
+        this.setState({ error: true, status: 'fail' });
         Notiflix.Notify.failure(error);
       }
     }
@@ -64,36 +64,33 @@ export class App extends React.Component {
     });
   };
 
-  resetBigImageLink = () => {
-    this.setState({ bigImageLink: '', bigImageDescription: '' });
-  };
+  // resetBigImageLink = () => {
+  //   this.setState({ bigImageLink: '', bigImageDescription: '' });
+  // };
 
-  setBigImageLink = (link, desc) => {
-    this.setState({ bigImageLink: link, bigImageDescription: desc });
-  };
+  // setBigImageLink = (link, desc) => {
+  //   this.setState({ bigImageLink: link, bigImageDescription: desc });
+  // };
 
   loadMore = () => {
     this.setState(s => ({ page: s.page + 1 }));
   };
 
   render() {
-    const { bigImageLink, bigImageDescription, arrayOfPictures, status } =
-      this.state;
+    const { arrayOfPictures, status } = this.state;
     return (
       <>
         <Searchbar submitProp={this.handleSubmit} />
-        {arrayOfPictures.length > 0 && (
-          <ImageGallery
-            images={arrayOfPictures}
-            clickProp={this.setBigImageLink}
-          />
+        {status === 'fail' && <div> Something wrong </div>}
+        {arrayOfPictures.length > 0 && status !== 'fail' && (
+          <ImageGallery images={arrayOfPictures} />
         )}
         {status === 'pending' && <Loader />}
-        {bigImageLink.length > 0 && (
+        {/* {bigImageLink.length > 0 && (
           <Modal onClose={this.resetBigImageLink}>
             <img src={bigImageLink} alt={bigImageDescription} />
           </Modal>
-        )}
+        )} */}
         {arrayOfPictures.length >= 12 && status === 'resolved' && (
           <Button loadMore={this.loadMore} />
         )}

@@ -7,7 +7,7 @@ const modalRoot = document.getElementById('modal-root');
 
 export class Modal extends React.Component {
   static propTypes = {
-    onClick: PropTypes.func,
+    onClose: PropTypes.func.isRequired,
     children: PropTypes.node,
   };
 

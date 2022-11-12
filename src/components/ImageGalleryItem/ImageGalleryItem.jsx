@@ -1,16 +1,36 @@
 import PropTypes from 'prop-types';
+import React from 'react';
+import { Modal } from 'components/Modal';
 import { GalleryItem, ItemImage } from './ImageGalleryItem.styled';
 
-export const ImageGalleryItem = ({ preview, clickHandler, description }) => {
-  return (
-    <GalleryItem onClick={clickHandler}>
-      <ItemImage src={preview} alt={description} />
-    </GalleryItem>
-  );
-};
+export class ImageGalleryItem extends React.Component {
+  static propTypes = {
+    onClick: PropTypes.func,
+    preview: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    onClose: PropTypes.func,
+  };
 
-ImageGalleryItem.propTypes = {
-  preview: PropTypes.string,
-  clickHandler: PropTypes.func,
-  description: PropTypes.string,
-};
+  state = { isModalOpen: false };
+
+  openModal = () => {
+    this.setState({ isModalOpen: true });
+  };
+
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
+  };
+
+  render() {
+    return (
+      <GalleryItem onClick={this.openModal}>
+        <ItemImage src={this.props.preview} alt={this.props.description} />
+        {this.state.isModalOpen && (
+          <Modal onClose={this.closeModal}>
+            <img src={this.props.bigImage} alt={this.props.description} />
+          </Modal>
+        )}
+      </GalleryItem>
+    );
+  }
+}
