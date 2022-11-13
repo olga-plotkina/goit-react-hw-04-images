@@ -5,38 +5,36 @@ import { StyledOverlay, StyledModal } from './Modal.styled';
 
 const modalRoot = document.getElementById('modal-root');
 
-export class Modal extends React.Component {
-  static propTypes = {
-    onClose: PropTypes.func.isRequired,
-    children: PropTypes.node,
-  };
-
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
+export const Modal = (onClose, children) => {
+  function componentDidMount() {
+    window.addEventListener('keydown', handleKeyDown);
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
+  function componentWillUnmount() {
+    window.removeEventListener('keydown', handleKeyDown);
   }
 
-  handleKeyDown = e => {
+  const handleKeyDown = e => {
     if (e.code === 'Escape') {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  handleBackdropClick = e => {
+  const handleBackdropClick = e => {
     if (e.target === e.currentTarget) {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  render() {
-    return createPortal(
-      <StyledOverlay onClick={this.handleBackdropClick}>
-        <StyledModal>{this.props.children}</StyledModal>
-      </StyledOverlay>,
-      modalRoot
-    );
-  }
-}
+  return createPortal(
+    <StyledOverlay onClick={handleBackdropClick}>
+      <StyledModal>{children}</StyledModal>
+    </StyledOverlay>,
+    modalRoot
+  );
+};
+
+Modal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.node,
+};
