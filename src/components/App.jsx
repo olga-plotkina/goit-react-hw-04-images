@@ -35,44 +35,12 @@ export function App() {
     }
     getPicturesInfo();
   }, [page, searchString]);
-  // async function componentDidUpdate(prevProps, prevState) {
-  //   if (prevState.searchString !== this.state.searchString) {
-  //     try {
-  //       setStatus('pending');
-  //       const picturesInfo = await getCurrentPicture(searchString, page);
-  //       if (picturesInfo.data.hits.length === 0) {
-  //         Notiflix.Notify.failure('Sorry, we have not found anything');
-  //         return;
-  //       }
-  //       setArrayofPictures(picturesInfo.data.hits);
-  //       setStatus('resolved');
-  //     } catch (error) {
-  //       setStatus('fail');
-  //       setError('true');
-  //       Notiflix.Notify.failure(error);
-  //     }
-  //   }
-  //   if (prevState.page < this.state.page) {
-  //     try {
-  //       setStatus('pending');
-  //       const picturesInfo = await getCurrentPicture(searchString, page);
-  //       if (picturesInfo.data.hits.length === 0) {
-  //         Notiflix.Notify.failure('Sorry, there are no more images');
-  //         return;
-  //       }
-  //       this.setState(s => ({
-  //         arrayOfPictures: [...s.arrayOfPictures, ...picturesInfo.data.hits],
-  //         status: 'resolved',
-  //       }));
-  //     } catch (error) {
-  //       this.setState({ error: true, status: 'fail' });
-  //       Notiflix.Notify.failure(error);
-  //     }
-  //   }
-  // }
 
   const handleSubmit = info => {
     setPage(1);
+    if (searchString === info.search.toLowerCase()) {
+      return;
+    }
     setSearchString(info.search.toLowerCase());
     setArrayofPictures([]);
   };

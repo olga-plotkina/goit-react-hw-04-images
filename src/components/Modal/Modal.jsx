@@ -1,24 +1,22 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { StyledOverlay, StyledModal } from './Modal.styled';
 
 const modalRoot = document.getElementById('modal-root');
 
 export const Modal = ({ onClose, children }) => {
-  // function componentDidMount() {
-  //   window.addEventListener('keydown', handleKeyDown);
-  // }
+  useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.code === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
 
-  // function componentWillUnmount() {
-  //   window.removeEventListener('keydown', handleKeyDown);
-  // }
-
-  // const handleKeyDown = e => {
-  //   if (e.code === 'Escape') {
-  //     onClose();
-  //   }
-  // };
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   const handleBackdropClick = e => {
     if (e.target === e.currentTarget) {
