@@ -12,24 +12,29 @@ export function App() {
   const [status, setStatus] = useState('idle');
   const [page, setPage] = useState(1);
   const [arrayOfPictures, setArrayofPictures] = useState([]);
-  const [error, setError] = useState('false');
+  const [error, setError] = useState('');
 
-  useEffect(async () => {
-    try {
-      setStatus('pending');
-      const picturesInfo = await getCurrentPicture(searchString, page);
-      if (picturesInfo.data.hits.length === 0) {
-        Notiflix.Notify.failure('Sorry, we have not found anything');
-        return;
-      }
-      setArrayofPictures(picturesInfo.data.hits);
-      setStatus('resolved');
-    } catch (error) {
-      setStatus('fail');
-      setError('true');
-      Notiflix.Notify.failure(error);
+  useEffect(() => {
+    if (searchString === '') {
+      return;
     }
-  }, [status, arrayOfPictures]);
+    async function getPicturesInfo() {
+      try {
+        setStatus('pending');
+        const picturesInfo = await getCurrentPicture(searchString, page);
+        if (picturesInfo.data.hits.length === 0) {
+          Notiflix.Notify.failure('Sorry, we have not found anything');
+          return;
+        }
+        setArrayofPictures(s => [...s, ...picturesInfo.data.hits]);
+        setStatus('resolved');
+      } catch (error) {
+        setStatus('rejected');
+        setError(error);
+      }
+    }
+    getPicturesInfo();
+  }, [page, searchString]);
   // async function componentDidUpdate(prevProps, prevState) {
   //   if (prevState.searchString !== this.state.searchString) {
   //     try {
@@ -67,16 +72,10 @@ export function App() {
   // }
 
   const handleSubmit = info => {
+    setPage(1);
     setSearchString(info.search.toLowerCase());
+    setArrayofPictures([]);
   };
-
-  // resetBigImageLink = () => {
-  //   this.setState({ bigImageLink: '', bigImageDescription: '' });
-  // };
-
-  // setBigImageLink = (link, desc) => {
-  //   this.setState({ bigImageLink: link, bigImageDescription: desc });
-  // };
 
   const loadMore = () => {
     setPage(s => s + 1);
@@ -85,16 +84,11 @@ export function App() {
   return (
     <>
       <Searchbar submitProp={handleSubmit} />
-      {status === 'fail' && <div> Something wrong </div>}
+      {status === 'rejected' && <div> Something wrong: {error} </div>}
       {arrayOfPictures.length > 0 && status !== 'fail' && (
         <ImageGallery images={arrayOfPictures} />
       )}
       {status === 'pending' && <Loader />}
-      {/* {bigImageLink.length > 0 && (
-          <Modal onClose={this.resetBigImageLink}>
-            <img src={bigImageLink} alt={bigImageDescription} />
-          </Modal>
-        )} */}
       {arrayOfPictures.length >= 12 && status === 'resolved' && (
         <Button loadMore={loadMore} />
       )}

@@ -5,20 +5,20 @@ import { StyledOverlay, StyledModal } from './Modal.styled';
 
 const modalRoot = document.getElementById('modal-root');
 
-export const Modal = (onClose, children) => {
-  function componentDidMount() {
-    window.addEventListener('keydown', handleKeyDown);
-  }
+export const Modal = ({ onClose, children }) => {
+  // function componentDidMount() {
+  //   window.addEventListener('keydown', handleKeyDown);
+  // }
 
-  function componentWillUnmount() {
-    window.removeEventListener('keydown', handleKeyDown);
-  }
+  // function componentWillUnmount() {
+  //   window.removeEventListener('keydown', handleKeyDown);
+  // }
 
-  const handleKeyDown = e => {
-    if (e.code === 'Escape') {
-      onClose();
-    }
-  };
+  // const handleKeyDown = e => {
+  //   if (e.code === 'Escape') {
+  //     onClose();
+  //   }
+  // };
 
   const handleBackdropClick = e => {
     if (e.target === e.currentTarget) {

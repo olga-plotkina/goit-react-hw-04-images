@@ -3,24 +3,22 @@ import { useState } from 'react';
 import { Modal } from 'components/Modal';
 import { GalleryItem, ItemImage } from './ImageGalleryItem.styled';
 
-export function ImageGalleryItem({ preview, description, bigImage }) {
+export const ImageGalleryItem = ({ preview, description, bigImage }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const toggleModal = () => {
-    setIsModalOpen(prevState => !prevState);
-  };
-
   return (
-    <GalleryItem onClick={toggleModal}>
-      <ItemImage src={preview} alt={description} />
+    <>
+      <GalleryItem onClick={() => setIsModalOpen(true)}>
+        <ItemImage src={preview} alt={description} />
+      </GalleryItem>
       {isModalOpen && (
-        <Modal onClose={toggleModal}>
+        <Modal onClose={() => setIsModalOpen(false)}>
           <img src={bigImage} alt={description} />
         </Modal>
       )}
-    </GalleryItem>
+    </>
   );
-}
+};
 
 ImageGalleryItem.propTypes = {
   onClick: PropTypes.func,
