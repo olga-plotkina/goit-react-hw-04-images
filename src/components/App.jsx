@@ -6,6 +6,7 @@ import { getCurrentPicture } from 'api/getCurrentPicture';
 import { Button } from './Button/';
 import { Loader } from 'components/Loader';
 import { useState, useEffect } from 'react';
+import { controller } from 'api/api';
 
 export function App() {
   const [searchString, setSearchString] = useState('');
@@ -34,6 +35,9 @@ export function App() {
       }
     }
     getPicturesInfo();
+    return () => {
+      controller.abort();
+    };
   }, [page, searchString]);
 
   const handleSubmit = info => {
